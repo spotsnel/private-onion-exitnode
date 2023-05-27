@@ -11,7 +11,9 @@ fi
 
 until /app/tailscale up \
     --authkey=${TAILSCALE_AUTH_KEY} \
-    --hostname=tor \
+    --hostname=tornode \
+    --advertise-exit-node \
+    --accept-dns=false \
     --ssh
 do
     sleep 0.1
@@ -19,10 +21,22 @@ done
 
 echo 'Tailscale serve Tor proxy...'
 
-/app/tailscale serve tcp:9050 tcp://localhost:9050
 /app/tailscale serve tcp:9051 tcp://localhost:9051
 
 echo 'Tailscale started'
+
+iptables -F
+iptables -t nat -F
+
+
+iptables -t nat -A OUTPUT -m owner --uid-owner tor -j RETURN
+#iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-port 5353
+iptables -t nat -A OUTPUT -p tcp --syn -j REDIRECT --to-ports 9040
+#iptables -A OUTPUT -m owner --uid-owner tor -j ACCEPT
+#iptables -A OUTPUT -d 127.0.0.0/8 -j ACCEPT
+#iptables -A OUTPUT -m state --state ESTABLISHED -j ACCEPT
+#iptables -A OUTPUT -j REJECT
+
 
 if [ "$1" != "" ]; then
   exec "$@"
