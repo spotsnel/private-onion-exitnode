@@ -8,6 +8,8 @@ Private exitnode to open Onion Services via Tailscale IPN
     Work in Progress
     Experimental
 
+![Screenshot](./assets/screenshot.png)
+
 
 ## Usage 
 
