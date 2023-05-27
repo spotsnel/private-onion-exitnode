@@ -1,4 +1,12 @@
-SOCKSPort 0.0.0.0:9050
+TransPort 9040
+DNSPort 5353
+ControlPort 9051
+VirtualAddrNetworkIPv4 10.192.0.0/10
+AutomapHostsOnResolve 1
+
+%include /etc/torrc.d/*.conf
+
+#SOCKSPort 0.0.0.0:9050
 #SOCKSPort 192.168.0.1:9100 # Bind to this address:port too.
 #SOCKSPolicy accept 192.168.0.0/16
 #SOCKSPolicy accept6 FC00::/7
@@ -7,9 +15,9 @@ SOCKSPort 0.0.0.0:9050
 #Log debug file /var/log/tor/debug.log
 #Log notice syslog
 #Log debug stderr
-Log notice stderr
+#Log notice stderr
 
-DataDirectory /var/lib/tor
+#DataDirectory /var/lib/tor
 
 #HashedControlPassword 16:872860B76453A77D60CA2BB8C1A7042072093276A3D701AD684053EC4C
 #CookieAuthentication 1

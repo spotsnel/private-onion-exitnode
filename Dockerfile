@@ -18,15 +18,13 @@ RUN apk --no-cache add \
       curl \
     && rm -rf /var/cache/apk/* \
       /tmp/* \
-      /var/tmp/*
-
-RUN sed "1s/^/TransPort 127.0.0.1:9040\nDNSPort 127.0.0.1:5353\nControlPort 127.0.0.1:9051\n/" /etc/tor/torrc.sample > /etc/tor/torrc \
-    &&  sed -i "s|#%include /etc/torrc.d/\*.conf|%include /etc/torrc.d/\*.conf|g" /etc/tor/torrc \
-    &&  mkdir -p /etc/torrc.d
+      /var/tmp/* \
+    && mkdir -p /etc/torrc.d
 
 VOLUME ["/etc/torrc.d"]
 VOLUME ["/var/lib/tor"]
 
+COPY torrc    /etc/tor/torrc
 COPY start.sh /app/start.sh
 COPY dns.sh   /app/dns.sh
 COPY --from=build /app/tailscaled /app/tailscaled
